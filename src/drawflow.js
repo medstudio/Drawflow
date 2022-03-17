@@ -599,54 +599,56 @@ export default class Drawflow {
     }
   }
 
-  createCurvature(start_pos_x, start_pos_y, end_pos_x, end_pos_y, curvature_value, type) {
-    var line_x = start_pos_x;
-    var line_y = start_pos_y;
-    var x = end_pos_x;
-    var y = end_pos_y;
-    var curvature = curvature_value;
-    //type openclose open close other
-    switch (type) {
-      case 'open':
-        if(start_pos_x >= end_pos_x) {
-          var hx1 = line_x + Math.abs(x - line_x) * curvature;
-          var hx2 = x - Math.abs(x - line_x) * (curvature*-1);
-        } else {
-          var hx1 = line_x + Math.abs(x - line_x) * curvature;
-          var hx2 = x - Math.abs(x - line_x) * curvature;
+ createCurvature(start_pos_x, start_pos_y, end_pos_x, end_pos_y, curvature_value, type) {
+        var line_x = start_pos_x;
+        var line_y = start_pos_y;
+        var x = end_pos_x;
+        var y = end_pos_y;
+        var curvature = curvature_value;
+        //type openclose open close other
+        switch (type) {
+          case 'open':
+            if(start_pos_x >= end_pos_x) {
+              var hx1 = line_x + Math.abs(x - line_x) * curvature;
+              var hx2 = x - Math.abs(x - line_x) * (curvature*-1);
+            } else {
+              var hx1 = line_x + Math.abs(x - line_x) * curvature;
+              var hx2 = x - Math.abs(x - line_x) * curvature;
+            }
+            return ' M '+ line_x +' '+ line_y +' C '+ hx1 +' '+ line_y +' '+ hx2 +' ' + y +' ' + x +'  ' + y;
+    
+            break
+          case 'close':
+            if(start_pos_x >= end_pos_x) {
+              var hx1 = line_x + Math.abs(x - line_x) * (curvature*-1);
+              var hx2 = x - Math.abs(x - line_x) * curvature;
+            } else {
+              var hx1 = line_x + Math.abs(x - line_x) * curvature;
+              var hx2 = x - Math.abs(x - line_x) * curvature;
+            }
+            return ' M '+ line_x +' '+ line_y +' C '+ hx1 +' '+ line_y +' '+ hx2 +' ' + y +' ' + x +'  ' + y;
+            break;
+          case 'other':
+            if(start_pos_x >= end_pos_x) {
+              var hx1 = line_x + Math.abs(x - line_x) * (curvature*-1);
+              var hx2 = x - Math.abs(x - line_x) * (curvature*-1);
+            } else {
+              var hx1 = line_x + Math.abs(x - line_x) * curvature;
+              var hx2 = x - Math.abs(x - line_x) * curvature;
+            }
+            return ' M '+ line_x +' '+ line_y +' C '+ hx1 +' '+ line_y +' '+ hx2 +' ' + y +' ' + x +'  ' + y;
+            break;
+          default:
+    
+            var hx1 = line_x  - (x - line_x) * 0.3*curvature;
+            var hy1 = line_y + (Math.abs(y - line_y)*curvature);
+            var hx2 = x - (x - line_x) *0.3* curvature;
+            var hy2 = y - Math.abs(y - line_y) * curvature;
+    
+            return ' M '+ line_x +' '+ line_y +' C '+ hx1 +' '+ hy1 +' '+ hx2 +' ' + hy2 +' ' + x +'  ' + y;
         }
-        return ' M '+ line_x +' '+ line_y +' C '+ hx1 +' '+ line_y +' '+ hx2 +' ' + y +' ' + x +'  ' + y;
-
-        break
-      case 'close':
-        if(start_pos_x >= end_pos_x) {
-          var hx1 = line_x + Math.abs(x - line_x) * (curvature*-1);
-          var hx2 = x - Math.abs(x - line_x) * curvature;
-        } else {
-          var hx1 = line_x + Math.abs(x - line_x) * curvature;
-          var hx2 = x - Math.abs(x - line_x) * curvature;
-        }
-        return ' M '+ line_x +' '+ line_y +' C '+ hx1 +' '+ line_y +' '+ hx2 +' ' + y +' ' + x +'  ' + y;
-        break;
-      case 'other':
-        if(start_pos_x >= end_pos_x) {
-          var hx1 = line_x + Math.abs(x - line_x) * (curvature*-1);
-          var hx2 = x - Math.abs(x - line_x) * (curvature*-1);
-        } else {
-          var hx1 = line_x + Math.abs(x - line_x) * curvature;
-          var hx2 = x - Math.abs(x - line_x) * curvature;
-        }
-        return ' M '+ line_x +' '+ line_y +' C '+ hx1 +' '+ line_y +' '+ hx2 +' ' + y +' ' + x +'  ' + y;
-        break;
-      default:
-
-        var hx1 = line_x + Math.abs(x - line_x) * curvature;
-        var hx2 = x - Math.abs(x - line_x) * curvature;
-
-        return ' M '+ line_x +' '+ line_y +' C '+ hx1 +' '+ line_y +' '+ hx2 +' ' + y +' ' + x +'  ' + y;
-    }
-
-  }
+    
+      }
 
   drawConnection(ele) {
     var connection = document.createElementNS('http://www.w3.org/2000/svg',"svg");
